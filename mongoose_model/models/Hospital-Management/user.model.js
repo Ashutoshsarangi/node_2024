@@ -7,22 +7,19 @@ const UserSchema = new Schema(
     name: {
       type: String,
       required: true,
-      unique: true,
-      lowercase: true,
     },
-    email: {
-      type: String,
-      unique: true,
-      required: true,
-    },
-    password: {
+    emial: {
       type: String,
       required: true,
+      unique: true,
+    },
+    role: {
+      type: String,
+      enum: ["doctor", "patient", "other"],
+      default: "other",
     },
   },
   { timestamps: true }
 );
 
 export const User = model("User", UserSchema);
-
-// in mongo db the collection name would be :- users
