@@ -1,5 +1,8 @@
-console.log('Hello World');
+import dotenv from 'dotenv';
+import {connectDB} from './db/index.js';
 
-const temp = 'Ashutosh Sarangi';
+dotenv.config({
+    path: './.env'
+});
 
-console.log(`This is a Temp Variable ${temp}`);
+connectDB();
