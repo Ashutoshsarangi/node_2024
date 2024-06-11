@@ -2,10 +2,11 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import bodyParser from "body-parser";
 import userRoute from "./src/routes/userRoute.js";
 import categoryRoute from "./src/routes/categoryRoute.js";
 import productRoute from "./src/routes/productRoute.js";
-import bodyParser from "body-parser";
+import ResponseErrorHandler from "./src/utils/responseErrorHandler.js";
 
 dotenv.config({
   path: "./.env",
@@ -38,3 +39,17 @@ mongoose
 app.use("/api/user", userRoute);
 app.use("/api/category", categoryRoute);
 app.use("/api/product", productRoute);
+
+app.use((req, res, next) => {
+  const error = new ResponseErrorHandler("Could not found this route", 404);
+  throw error;
+});
+
+app.use((error, req, res, next) => {
+  if (res.headerSent) {
+    return next(error);
+  }
+  res
+    .status(error.code || 500)
+    .json({ message: error.message || "Something Went Wrong..." });
+});

@@ -1,46 +1,32 @@
 import User from "../models/userModels.js";
-import { erroHandler, sucessHandler } from "../utils/common.utils.js";
+import { sucessHandler } from "../utils/common.utils.js";
+import ResponseErrorHandler from "../utils/responseErrorHandler.js";
 
-export const create = async (req, res) => {
+export const create = async (req, res, next) => {
   try {
     const userData = new User(req.body);
 
     if (!userData) {
-      return erroHandler(res, "User Data not found", 404);
+      return next(new ResponseErrorHandler("User Data not found", 404));
     }
 
     const savedData = await userData.save();
     return sucessHandler(res, "User Data Saved Sucessfully", savedData);
   } catch (error) {
-    console.log("Failed in Back End User Creation, ", error);
-    return erroHandler(res, error);
+    return next(error);
   }
 };
 
-export const getAll = async (req, res) => {
+export const getAll = async (req, res, next) => {
   try {
     const allUser = await User.find();
     if (!allUser) {
-      return res.status(404).json({
-        message: "No user found",
-        data: [],
-        status: 404,
-        sucess: true,
-      });
+      return next(new ResponseErrorHandler("No user found", 404));
     }
-    return res.status(200).json({
-      message: "Found All user",
-      data: allUser,
-      status: 200,
-      sucess: true,
-    });
+
+    return sucessHandler(res, "User Data Saved Sucessfully", allUser);
   } catch (error) {
-    console.log("Failed in Back End User Creation, ", error);
-    return res.status(500).json({
-      message: error,
-      status: 500,
-      sucess: false,
-    });
+    return next(error);
   }
 };
 
@@ -50,12 +36,12 @@ export const getOne = async (req, res) => {
     const userExist = await User.findById(id);
 
     if (!userExist) {
-      return erroHandler(res, "User Data not found", 404);
+      return next(new ResponseErrorHandler("User Data not found", 404));
     }
 
     return sucessHandler(res, "User Data get Sucessfully", userExist);
   } catch (error) {
-    return erroHandler(res, error);
+    return next(error);
   }
 };
 
@@ -67,12 +53,12 @@ export const update = async (req, res) => {
     });
 
     if (!updatedUser) {
-      return erroHandler(res, "User Data not found", 404);
+      return next(new ResponseErrorHandler("User Data not found", 404));
     }
 
     return sucessHandler(res, "User Data get Sucessfully", updatedUser);
   } catch (error) {
-    return erroHandler(res, error);
+    return next(error);
   }
 };
 
@@ -83,6 +69,6 @@ export const deleteUser = async (req, res) => {
 
     return sucessHandler(res, "User Data Deleted Sucessfully");
   } catch (error) {
-    return erroHandler(res, error);
+    return next(error);
   }
 };
