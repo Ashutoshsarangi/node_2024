@@ -3,10 +3,10 @@ import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
-import userRoute from "./src/routes/userRoute.js";
-import categoryRoute from "./src/routes/categoryRoute.js";
-import productRoute from "./src/routes/productRoute.js";
-import ResponseErrorHandler from "./src/utils/responseErrorHandler.js";
+import userRoute from "./src/routes/user.routes.js";
+import categoryRoute from "./src/routes/category.routes.js";
+import productRoute from "./src/routes/product.routes.js";
+import ResponseErrorHandler from "./src/utils/responseErrorHandler.utils.js";
 
 dotenv.config({
   path: "./.env",

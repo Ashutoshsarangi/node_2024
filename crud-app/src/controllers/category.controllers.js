@@ -1,4 +1,4 @@
-import Category from "../models/categoryModel.js";
+import Category from "../models/category.models.js";
 import { erroHandler, sucessHandler } from "../utils/common.utils.js";
 
 export const create = async (req, res) => {

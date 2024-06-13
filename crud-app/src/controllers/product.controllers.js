@@ -1,4 +1,4 @@
-import Product from "../models/productModel.js";
+import Product from "../models/product.models.js";
 import { erroHandler, sucessHandler } from "../utils/common.utils.js";
 
 export const create = async (req, res) => {
